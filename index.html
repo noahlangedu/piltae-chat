@@ -10,49 +10,87 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
+    :root {
+      color-scheme: dark;
+      --bg: #080b12;
+      --panel: #101522;
+      --panel2: #131b2b;
+      --border: #293852;
+      --blue: #5da7ff;
+      --text: #e8ecf7;
+      --muted: #9aa9c2;
+    }
+
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
       min-height: 100vh;
-      padding: 20px;
+      padding: 16px;
       display: grid;
       place-items: center;
-      background: #080b12;
-      color: #e8ecf7;
-      font-family: Arial, sans-serif;
+      background:
+        radial-gradient(ellipse at top, #102346 0%, transparent 55%),
+        var(--bg);
+      color: var(--text);
+      font-family: system-ui, Arial, sans-serif;
     }
 
     .app {
       width: 100%;
-      max-width: 780px;
-      height: min(780px, 90vh);
-      min-height: 500px;
+      max-width: 850px;
+      height: min(820px, 92vh);
+      min-height: 480px;
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      background: #101522;
-      border: 1px solid #27334a;
+      background: var(--panel);
+      border: 1px solid var(--border);
       border-radius: 18px;
-      box-shadow: 0 0 45px #0066ff18;
+      box-shadow: 0 20px 80px #0008;
     }
 
     header {
       padding: 22px;
-      background: #131b2b;
-      border-bottom: 1px solid #27334a;
+      background: var(--panel2);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: #1c3b67;
+      border: 1px solid #3867a4;
+      color: white;
+      font-weight: 900;
+      font-size: 20px;
     }
 
     h1 {
-      margin: 0 0 8px;
-      font-size: 25px;
+      margin: 0 0 5px;
+      font-size: 23px;
       letter-spacing: 3px;
     }
 
-    h1 span { color: #5da7ff; }
+    h1 span { color: var(--blue); }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 12px;
+    }
 
     #status {
-      color: #9aa9c2;
+      margin-top: 15px;
+      color: var(--muted);
       font-size: 12px;
     }
 
@@ -63,12 +101,27 @@
       display: flex;
       flex-direction: column;
       gap: 12px;
+      scroll-behavior: smooth;
+    }
+
+    .welcome {
+      margin: auto 0;
+      padding: 24px 12px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .welcome strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text);
+      font-size: 19px;
     }
 
     .message {
       padding: 12px 14px;
       background: #192235;
-      border: 1px solid #293852;
+      border: 1px solid var(--border);
       border-radius: 12px;
       overflow-wrap: anywhere;
     }
@@ -78,62 +131,68 @@
       justify-content: space-between;
       gap: 12px;
       margin-bottom: 7px;
-      color: #76b2ff;
+      color: var(--blue);
       font-size: 12px;
     }
 
-    .time { color: #8491a8; }
+    .time {
+      color: #8491a8;
+      white-space: nowrap;
+    }
 
     .body {
       white-space: pre-wrap;
-      line-height: 1.45;
+      line-height: 1.5;
     }
 
     #notice {
-      padding: 0 16px 10px;
-      color: #9aa9c2;
-      font-size: 12px;
+      padding: 0 16px 12px;
+      color: var(--muted);
+      font-size: 11px;
     }
 
     form {
       display: grid;
-      grid-template-columns: 130px 1fr auto;
+      grid-template-columns: 135px minmax(0, 1fr) auto;
       gap: 9px;
       padding: 14px;
-      background: #131b2b;
-      border-top: 1px solid #27334a;
+      background: var(--panel2);
+      border-top: 1px solid var(--border);
     }
 
     input, button {
       min-width: 0;
       padding: 12px;
       border-radius: 9px;
+      font: inherit;
       font-size: 14px;
     }
 
     input {
+      width: 100%;
       color: white;
       background: #0b101c;
       border: 1px solid #34425c;
       outline: none;
     }
 
-    input:focus { border-color: #5da7ff; }
+    input:focus { border-color: var(--blue); }
 
     button {
       border: 0;
       background: #3988ff;
       color: white;
-      font-weight: bold;
+      font-weight: 750;
       cursor: pointer;
     }
 
     button:hover { background: #2675eb; }
     button:disabled { opacity: .5; cursor: wait; }
 
-    @media (max-width: 540px) {
-      body { padding: 8px; }
+    @media (max-width: 560px) {
+      body { padding: 7px; }
       .app { height: 94vh; }
+      header { padding: 17px; }
       form { grid-template-columns: 1fr auto; }
       #username { grid-column: 1 / -1; }
     }
@@ -143,14 +202,25 @@
 <body>
   <main class="app">
     <header>
-      <h1>PILTAE <span>CHAT</span></h1>
-      <div id="status">Connecting to chat...</div>
+      <div class="brand">
+        <div class="logo">P</div>
+        <div>
+          <h1>PILTAE <span>CHAT</span></h1>
+          <div class="subtitle">ONE CHAT. EVERYWHERE.</div>
+        </div>
+      </div>
+      <div id="status">Connecting to database...</div>
     </header>
 
-    <section id="messages" aria-live="polite"></section>
+    <section id="messages" aria-live="polite">
+      <div class="welcome" id="welcome">
+        <strong>Welcome to PILTAE CHAT</strong>
+        Connecting you to the community...
+      </div>
+    </section>
 
     <div id="notice">
-      Public group chat — be respectful. Don't share personal information.
+      Public chat: anyone can read and post messages. Don't share private information.
     </div>
 
     <form id="chatForm">
@@ -158,6 +228,7 @@
         id="username"
         maxlength="24"
         placeholder="Your name"
+        aria-label="Your name"
         required
         autocomplete="nickname"
       >
@@ -166,6 +237,7 @@
         id="content"
         maxlength="500"
         placeholder="Type a message..."
+        aria-label="Message"
         required
         autocomplete="off"
       >
@@ -175,15 +247,15 @@
   </main>
 
   <script>
-    // Replace this placeholder with your actual Supabase Project URL.
-    const SUPABASE_URL = "PASTE_YOUR_PROJECT_URL_HERE";
+    const SUPABASE_URL =
+      "https://trjuphmbtcmijlknzspr.supabase.co";
 
-    // Your public publishable key.
     const SUPABASE_KEY =
       "sb_publishable_QgtDI4HQihh_CKILw9iK1g_emOKNWOe";
 
     const statusEl = document.getElementById("status");
     const messagesEl = document.getElementById("messages");
+    const welcomeEl = document.getElementById("welcome");
     const form = document.getElementById("chatForm");
     const usernameEl = document.getElementById("username");
     const contentEl = document.getElementById("content");
@@ -192,17 +264,18 @@
     let client = null;
     let sending = false;
     let lastSentAt = 0;
-    let channel = null;
+    let refreshTimer = null;
 
     function showStatus(message) {
       statusEl.textContent = message;
     }
 
     function renderMessage(message) {
-      // Avoid duplicates when realtime and refresh both receive a message.
       if (messagesEl.querySelector(`[data-id="${message.id}"]`)) {
         return;
       }
+
+      if (welcomeEl) welcomeEl.remove();
 
       const item = document.createElement("article");
       item.className = "message";
@@ -228,7 +301,7 @@
       const body = document.createElement("div");
       body.className = "body";
 
-      // textContent prevents user messages from being interpreted as HTML.
+      // Display messages as text, never as executable HTML.
       body.textContent = message.content;
 
       meta.append(name, time);
@@ -243,6 +316,8 @@
     }
 
     async function loadMessages() {
+      if (!client) return;
+
       const { data, error } = await client
         .from("messages")
         .select("id, username, content, created_at")
@@ -258,17 +333,8 @@
     }
 
     async function startChat() {
-      if (
-        SUPABASE_URL.includes("PASTE_") ||
-        !SUPABASE_URL.startsWith("https://") ||
-        SUPABASE_KEY.includes("PASTE_")
-      ) {
-        showStatus("Setup needed: add your Supabase Project URL.");
-        return;
-      }
-
       if (!window.supabase) {
-        showStatus("Chat library failed to load. Refresh and try again.");
+        showStatus("Chat library failed to load. Refresh the page.");
         return;
       }
 
@@ -279,8 +345,8 @@
 
       await loadMessages();
 
-      channel = client
-        .channel("public-messages")
+      client
+        .channel("piltae-public-messages")
         .on(
           "postgres_changes",
           {
@@ -288,20 +354,20 @@
             schema: "public",
             table: "messages"
           },
-          payload => renderMessage(payload.new)
+          event => renderMessage(event.new)
         )
         .subscribe(state => {
           if (state === "SUBSCRIBED") {
-            showStatus("ONLINE · Live group chat");
+            showStatus("● ONLINE — Live group chat");
           } else if (state === "CHANNEL_ERROR") {
-            showStatus("Live updates unavailable. Refresh to retry.");
+            showStatus("Live connection unavailable; checking periodically.");
           } else if (state === "CLOSED") {
-            showStatus("Chat connection closed. Refresh to reconnect.");
+            showStatus("Connection closed. Refresh to reconnect.");
           }
         });
 
-      // Refresh messages periodically as a fallback.
-      setInterval(loadMessages, 15000);
+      // Fallback refresh if realtime updates fail.
+      refreshTimer = setInterval(loadMessages, 15000);
     }
 
     form.addEventListener("submit", async event => {
@@ -315,7 +381,7 @@
       if (!username || !content) return;
 
       if (username.length > 24 || content.length > 500) {
-        showStatus("Name or message is too long.");
+        showStatus("Your name or message is too long.");
         return;
       }
 
@@ -354,4 +420,3 @@
   </script>
 </body>
 </html>
-
